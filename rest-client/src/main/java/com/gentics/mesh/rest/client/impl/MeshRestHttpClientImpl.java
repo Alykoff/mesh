@@ -1,5 +1,21 @@
 package com.gentics.mesh.rest.client.impl;
 
+import static com.gentics.mesh.http.HttpConstants.APPLICATION_YAML_UTF8;
+import static com.gentics.mesh.rest.client.impl.HttpMethod.DELETE;
+import static com.gentics.mesh.rest.client.impl.HttpMethod.GET;
+import static com.gentics.mesh.rest.client.impl.HttpMethod.POST;
+import static com.gentics.mesh.util.URIUtils.encodeSegment;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.SequenceInputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.InvalidParameterException;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Vector;
+import java.util.stream.Collectors;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gentics.mesh.core.rest.MeshServerInfoModel;
 import com.gentics.mesh.core.rest.admin.cluster.ClusterStatusResponse;
@@ -82,22 +98,6 @@ import com.gentics.mesh.rest.client.MeshRequest;
 import com.gentics.mesh.rest.client.MeshRestClient;
 import com.gentics.mesh.rest.client.MeshWebrootResponse;
 import com.gentics.mesh.util.URIUtils;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.SequenceInputStream;
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidParameterException;
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Vector;
-import java.util.stream.Collectors;
-
-import static com.gentics.mesh.http.HttpConstants.APPLICATION_YAML_UTF8;
-import static com.gentics.mesh.rest.client.impl.HttpMethod.DELETE;
-import static com.gentics.mesh.util.URIUtils.encodeSegment;
-import static com.gentics.mesh.rest.client.impl.HttpMethod.GET;
-import static com.gentics.mesh.rest.client.impl.HttpMethod.POST;
 /**
  * HTTP based REST client implementation.
  */
@@ -340,9 +340,9 @@ public abstract class MeshRestHttpClientImpl extends AbstractMeshRestHttpClient 
 	}
 
 	@Override
-	public MeshRequest<GenericMessageResponse> purgeProject(String uuid) {
+	public MeshRequest<GenericMessageResponse> purgeProject(String uuid, ParameterProvider... parameters) {
 		Objects.requireNonNull(uuid, "uuid must not be null");
-		return prepareRequest(POST, "/projects/" + uuid + "/maintenance/purge", GenericMessageResponse.class);
+		return prepareRequest(POST, "/projects/" + uuid + "/maintenance/purge" + getQuery(parameters), GenericMessageResponse.class);
 	}
 
 	@Override
