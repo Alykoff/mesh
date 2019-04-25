@@ -7,7 +7,7 @@ import java.io.ByteArrayInputStream;
 
 import org.junit.Test;
 
-import com.gentics.mesh.core.rest.admin.migration.MigrationStatus;
+import com.gentics.mesh.core.rest.job.JobStatus;
 import com.gentics.mesh.core.rest.node.NodeResponse;
 import com.gentics.mesh.core.rest.schema.SchemaListResponse;
 import com.gentics.mesh.core.rest.schema.impl.SchemaResponse;
@@ -25,7 +25,7 @@ public class NodeBinaryIngestMigrationTest extends AbstractMeshTest {
 	public void schemaMigrationWithIngestableBinary() {
 		grantAdminRole();
 		uploadIngestableNode();
-		waitForJobs(this::migrateSchema, MigrationStatus.COMPLETED, 1);
+		waitForJobs(this::migrateSchema, JobStatus.COMPLETED, 1);
 	}
 
 	private void uploadIngestableNode() {

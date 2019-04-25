@@ -9,6 +9,8 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import org.apache.commons.io.IOUtils;
+
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.gentics.mesh.Mesh;
 import com.gentics.mesh.context.impl.LocalActionContextImpl;
@@ -119,7 +121,6 @@ import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.CaseInsensitiveHeaders;
 import io.vertx.ext.web.FileUpload;
-import org.apache.commons.io.IOUtils;
 
 /**
  * Local client implementation. This client will invoke endpoint handlers instead of sending http rest requests. Please note that is implementation is not very
@@ -433,6 +434,13 @@ public class MeshLocalClientImpl implements MeshRestClient {
 	public MeshRequest<EmptyResponse> deleteProject(String uuid) {
 		LocalActionContextImpl<EmptyResponse> ac = createContext(EmptyResponse.class);
 		projectCrudHandler.handleDelete(ac, uuid);
+		return new MeshLocalRequestImpl<>(ac.getFuture());
+	}
+
+	@Override
+	public MeshRequest<GenericMessageResponse> purgeProject(String uuid) {
+		LocalActionContextImpl<GenericMessageResponse> ac = createContext(GenericMessageResponse.class);
+		projectCrudHandler.handlePurge(ac, uuid);
 		return new MeshLocalRequestImpl<>(ac.getFuture());
 	}
 
